@@ -15,23 +15,21 @@ def calculate(debug, parsed):
         full_day   = project['city']['full_day']
         travel_day = project['city']['travel_day']
         for day in range(start_day, end_day+1):
-            if day == start_day == end_day:
-                # Assuming 1 day project is full day?
-                if debug: print(day, '1_full_day', project['city']['desc'])
-                results[day].append(full_day)
-            elif day == start_day:
+            if day == start_day:
                 # Assume start is travel day
-                if debug: print(day, 'start', project['city']['desc'])
                 cost = travel_day
                 # If we overlapped, take a full day
                 if len(results[day]) > 0:
-                    if debug: print("overlap")
+                    if debug: print(day, "--> overlap (full day)")
                     cost = full_day
                 # Or if we worked the previous day
-                elif day-1 > 0 and len(results[day-1]) > 0:
+                elif day > 1 and len(results[day-1]) > 0:
                     # TODO: this doesn't take high cost of previous day (if needed?)
-                    if debug: print("pushed up against")
+                    if debug: print(day, "--> pushed up against (full day)")
+                    # TODO: also this overrrides low cost full days with high
+                    results[day-1].append(full_day)
                     cost = full_day
+                if debug: print(day, 'start', project['city']['desc'])
                 results[day].append(cost)
             elif day == end_day:
                 # Assume end is travel day
@@ -46,14 +44,14 @@ def calculate(debug, parsed):
     return [max(day) for day in results.values() if len(day) > 0]
 
 def main():
-    debug = sys.argv[1:] # Literally anything
+    debug = "--debug" in sys.argv[1:]
     with open("./sets.yaml") as f:
         sets = yaml.safe_load(f)
     print("Calculating project sets...\n")
     for s in sets['sets']:
         if debug: print("---")
         results = calculate(debug, sets['sets'][s])
-        print(f"{s} {results}", "=", sum(results))
+        print(f"{s} {results} = ${sum(results)}")
 
 if __name__ == '__main__':
     main()
