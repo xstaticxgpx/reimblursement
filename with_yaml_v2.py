@@ -19,8 +19,6 @@ class Project:
 class ProjectDay:
     def __init__(self, project):
         self.project = project
-        self.full_day = self.project.full_day
-        self.travel_day = self.project.travel_day
         self.val = 0
     def __iadd__(self, val):
         self.val += val
@@ -60,7 +58,7 @@ def calculate(debug, parsed):
                     if debug: print(day, "--> pushed up against (full day)")
                     # We also want to bump previous day to that projects full day?
                     previous_day = results[day-1].pop()
-                    previous_day.val = previous_day.full_day
+                    previous_day.val = previous_day.project.full_day
                     results[day-1].append(previous_day)
                     cost = project.full_day
                 if debug: print(day, 'start', project.desc)
