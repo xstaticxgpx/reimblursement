@@ -48,6 +48,8 @@ def calculate(debug, parsed):
     min_start = min([project['start'].timetuple().tm_yday for project in parsed])
     max_end = max([project['end'].timetuple().tm_yday for project in parsed])
 
+    assert max_end > min_start, "end times cannot be before start times"
+
     # Each day is only counted once, use a dict of `day: [ProjectDay, ..]`
     # which is subequently flattened with `max` using list comprehension
     results = {day: [] for day in range(min_start, max_end+1)}
@@ -56,7 +58,10 @@ def calculate(debug, parsed):
         if debug: print(project)
         for day in project.duration():
             pdc = ProjectDay(project)
-            if day == project.start:
+            if day == project.start == project.end:
+                if debug: print(day, '1_day', project.desc)
+                pdc += project.travel_day
+            elif day == project.start:
                 # Assume start is travel day
                 cost = project.travel_day
                 # If we overlapped, take a full day, will take highest cost

@@ -15,49 +15,47 @@ By extending a new object with the relevant properties we can work on that objec
 
 2. Run the program
 
-This shouldn't require any special python packages besides `pytest`
+This shouldn't require any special python packages besides `pytest` for testing
 ```
 # Try tests first:
 $ python -m pytest test.py
 ..
 
-$ ./with_yaml_v1.py
+$ ./with_yaml_v1.py 
 Calculating project sets...
 
 set1 [45, 75, 45] = $165
-set2 [85, 85, 85, 85, 85, 75, 75, 45] = $620 # <-- full day high cost city for Day 1 (wrong I think)
+set2 [85, 85, 85, 85, 85, 75, 75, 45] = $620
 set3 [45, 75, 45, 55, 85, 85, 85] = $475
-set4 [85, 85, 55] = $225 # <-- ditto
+set4 [85, 85, 55] = $225
 
-$ ./with_yaml_v2.py
+$ ./with_yaml_v2.py 
 Calculating project sets...
 
 set1 [45, 75, 45] = $165
-set2 [75, 85, 85, 85, 85, 75, 75, 45] = $610 # <-- full day low cost city for Day 1 (as expected?)
+set2 [75, 85, 85, 85, 85, 75, 75, 45] = $610
 set3 [45, 75, 45, 55, 85, 85, 85] = $475
-set4 [75, 85, 55] = $215 # <-- ditto
+set4 [75, 85, 55] = $215
 
-# With legitimate datetime parsing!
-$ ./with_yaml_v3.py
+# With (kinda) legitimate datetime parsing!
+$ ./with_yaml_v3.py 
 Calculating project sets...
 
 set1 [45, 75, 45] = $165 (3 days)
 set2 [75, 85, 85, 85, 85, 75, 75, 45] = $610 (8 days)
-set3 [45, 75, 45, 55, 85, 85, 85] = $475 (7 days)
-set4 [75, 85, 55] = $215 (3 days)
-set5 [45, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 55] = $3555 (45 days)
-set6 [45, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 75, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 55] = $3640 (46 days)
+set3 [45, 75, 45, 55, 85, 55, 55] = $415 (7 days)
+set4 [45, 85, 55] = $185 (3 days)
 
-# Optionally with debugging:
-$ ./with_yaml.py --debug
+# Optionally with debugging (any version):
+$ ./with_yaml_v3.py --debug
 Calculating project sets...
 
 ---
-1 start low cost city
-2 middle low cost city
-3 end low cost city
-{1: [45], 2: [75], 3: [45]}
-set1 [45, 75, 45] = $165
----
+Project(start: 244, end: 246, city: {'desc': 'low cost city', 'full_day': 75, 'travel_day': 45})
+244 start low cost city
+245 middle low cost city
+246 end low cost city
+{244: [45], 245: [75], 246: [45]}
+set1 [45, 75, 45] = $165 (3 days)
 ...
 ```

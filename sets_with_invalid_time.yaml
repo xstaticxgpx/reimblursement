@@ -1,0 +1,45 @@
+---
+low_cost: &low_cost
+  desc: low cost city
+  full_day: 75
+  travel_day: 45
+high_cost: &high_cost
+  desc: high cost city
+  full_day: 85
+  travel_day: 55
+sets:
+  set1:
+    - { start: 2015-09-01, end: 2015-09-03, city: *low_cost }
+  set2:
+    - { start: 2015-09-01, end: 2015-09-01, city: *low_cost }
+    - { start: 2015-09-02, end: 2015-09-06, city: *high_cost }
+    - { start: 2015-09-06, end: 2015-09-08, city: *low_cost }
+  set3:
+    - { start: 2015-09-01, end: 2015-09-03, city: *low_cost }
+    - { start: 2015-09-05, end: 2015-09-07, city: *high_cost }
+    - { start: 2015-09-08, end: 2015-09-08, city: *high_cost }
+  set4:
+    - { start: 2015-09-01, end: 2015-09-01, city: *low_cost }
+    - { start: 2015-09-01, end: 2015-09-01, city: *low_cost }
+    - { start: 2015-09-02, end: 2015-09-02, city: *high_cost }
+    - { start: 2015-09-02, end: 2015-09-03, city: *high_cost }
+  set5: # 45 days given 09/30 is EOM
+    - { start: 2015-09-01, end: 2015-09-11, city: *low_cost }
+    - { start: 2015-09-11, end: 2015-09-21, city: *low_cost }
+    - { start: 2015-09-22, end: 2015-10-01, city: *high_cost }
+    - { start: 2015-10-01, end: 2015-10-15, city: *high_cost }
+  set6: # 46 days given 10/31 - automatically accounted for by `datetime`
+    - { start: 2015-10-01, end: 2015-10-11, city: *low_cost }
+    - { start: 2015-10-11, end: 2015-10-21, city: *low_cost }
+    - { start: 2015-10-22, end: 2015-10-31, city: *high_cost }
+    - { start: 2015-11-01, end: 2015-11-15, city: *high_cost }
+  set7:
+    - { start: 2015-09-01, end: 2015-10-11, city: *low_cost }
+    - { start: 2015-10-22, end: 2015-10-31, city: *high_cost }
+    - { start: 2015-11-01, end: 2015-11-15, city: *high_cost }
+    - { start: 2015-11-15, end: 2015-12-13, city: *low_cost }
+      # This basically stops at 94 days (when it rolls over)
+    - { start: 2015-11-15, end: 2016-03-25, city: *high_cost }
+  set8:
+      # Invalid!
+    - { start: 2015-09-01, end: 2015-08-29, city: *high_cost }
