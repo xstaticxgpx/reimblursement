@@ -29,9 +29,12 @@ class ProjectDay:
     def __iadd__(self, val):
         self.val += val
         return self
-    # Missing some black magic for `sum()` usage
     def __add__(self, other):
+        # Seems like `int()` works here too? not sure why I did this
         return ProjectDay(self.val + other)
+    def __radd__(self, other):
+        # This was the missing black magic for `sum()` usage
+        return int(self.val + other)
     def __int__(self):
         return self.val
     def __repr__(self):
@@ -41,6 +44,7 @@ class ProjectDay:
         return self.val > other.val
 
 def calculate(debug, parsed):
+    # We should be instantiating actual Project objects before this logic to re-use that
     min_start = min([project['start'].timetuple().tm_yday for project in parsed])
     max_end = max([project['end'].timetuple().tm_yday for project in parsed])
 
@@ -89,11 +93,7 @@ def main():
     for s in sets['sets']:
         if debug: print("---")
         results = calculate(debug, sets['sets'][s])
-        total = 0
-        for result in results:
-            # Ugh why can't we get inferred int representation here (ie. to use sum() directly)
-            total += int(result)
-        print(f"{s} {results} = ${total} ({len(results)} days)")
+        print(f"{s} {results} = ${sum(results)} ({len(results)} days)")
 
 if __name__ == '__main__':
     main()
