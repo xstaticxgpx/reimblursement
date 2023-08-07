@@ -57,9 +57,8 @@ def calculate(debug, parsed):
                 elif day > min_start and len(results[day-1]) > 0:
                     if debug: print(day, "--> pushed up against (full day)")
                     # We also want to bump previous day to that projects full day?
-                    previous_day = results[day-1].pop()
+                    previous_day = results[day-1][-1]
                     previous_day.val = previous_day.project.full_day
-                    results[day-1].append(previous_day)
                     cost = project.full_day
                 if debug: print(day, 'start', project.desc)
                 pdc += cost
