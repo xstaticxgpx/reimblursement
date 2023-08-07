@@ -13,9 +13,9 @@ sets:
   set2:
     - { start: 1, end: 1, city: *low_cost }
     - { start: 2, end: 6, city: *high_cost }
-    - { start: 6, end: 8, city: *high_cost }
+    - { start: 6, end: 8, city: *low_cost }
   set3:
-    - { start: 1, end: 3, city: *high_cost }
+    - { start: 1, end: 3, city: *low_cost }
     - { start: 5, end: 7, city: *high_cost }
     - { start: 8, end: 8, city: *high_cost }
   set4:
