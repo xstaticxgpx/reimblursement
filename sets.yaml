@@ -7,18 +7,19 @@ high_cost: &high_cost
   desc: high cost city
   full_day: 85
   travel_day: 55
-set1:
-  - { start: 1, end: 3, city: *high_cost }
-set2:
-  - { start: 1, end: 1, city: *low_cost }
-  - { start: 2, end: 6, city: *high_cost }
-  - { start: 6, end: 8, city: *high_cost }
-set3:
-  - { start: 1, end: 3, city: *high_cost }
-  - { start: 5, end: 7, city: *high_cost }
-  - { start: 8, end: 8, city: *high_cost }
-set4:
-  - { start: 1, end: 1, city: *low_cost }
-  - { start: 1, end: 1, city: *low_cost }
-  - { start: 2, end: 2, city: *high_cost }
-  - { start: 2, end: 3, city: *high_cost }
+sets:
+  set1:
+    - { start: 1, end: 3, city: *low_cost }
+  set2:
+    - { start: 1, end: 1, city: *low_cost }
+    - { start: 2, end: 6, city: *high_cost }
+    - { start: 6, end: 8, city: *high_cost }
+  set3:
+    - { start: 1, end: 3, city: *high_cost }
+    - { start: 5, end: 7, city: *high_cost }
+    - { start: 8, end: 8, city: *high_cost }
+  set4:
+    - { start: 1, end: 1, city: *low_cost }
+    - { start: 1, end: 1, city: *low_cost }
+    - { start: 2, end: 2, city: *high_cost }
+    - { start: 2, end: 3, city: *high_cost }
