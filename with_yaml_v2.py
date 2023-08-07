@@ -11,12 +11,16 @@ class Project:
         self.travel_day = project['city']['travel_day']
         self.full_day = project['city']['full_day']
         self.desc = project['city']['desc']
+    def __repr__(self):
+        return str(f"Project(start: {self.start}, end: {self.end}, city: {self.city})")
     def duration(self):
         return range(self.start, self.end+1)
 
 class ProjectDay:
     def __init__(self, project):
         self.project = project
+        self.full_day = self.project.full_day
+        self.travel_day = self.project.travel_day
         self.val = 0
     def __iadd__(self, val):
         self.val += val
@@ -37,9 +41,11 @@ def calculate(debug, parsed):
     max_end = max([project['end'] for project in parsed])
 
     # Each day is only counted once, use a dict of `day: [ProjectDay, ..]`
+    # which is subequently flattened with `max` using list comprehension
     results = {day: [] for day in range(min_start, max_end+1)}
     for project in parsed:
         project = Project(project)
+        if debug: print(project)
         for day in project.duration():
             pdc = ProjectDay(project)
             if day == project.start:
@@ -51,19 +57,22 @@ def calculate(debug, parsed):
                     cost = project.full_day
                 # Or if we worked the previous day
                 elif day > min_start and len(results[day-1]) > 0:
-                    # We want to take the full cost of the previous days project?
                     if debug: print(day, "--> pushed up against (full day)")
-                    cost = results[day-1][-1].project.full_day
+                    # We also want to bump previous day to that projects full day?
+                    previous_day = results[day-1].pop()
+                    previous_day.val = previous_day.full_day
+                    results[day-1].append(previous_day)
+                    cost = project.full_day
                 if debug: print(day, 'start', project.desc)
                 pdc += cost
+            elif project.start < day < project.end:
+                # Assume full day in the middle
+                if debug: print(day, 'middle', project.desc)
+                pdc += project.full_day
             elif day == project.end:
                 # Assume end is travel day
                 if debug: print(day, 'end', project.desc)
                 pdc += project.travel_day
-            elif project.start <= day <= project.end:
-                # Assume full day in the middle
-                if debug: print(day, 'middle', project.desc)
-                pdc += project.full_day
             results[day].append(pdc)
 
     if debug: print(results)
